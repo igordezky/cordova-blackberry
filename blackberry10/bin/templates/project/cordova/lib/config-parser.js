@@ -162,6 +162,7 @@ function processWidgetData(data, widgetConfig, session) {
     //Push empty WIDGET_LOCAL access obj until whitelisting is cleaned up
     widgetConfig.accessList.push(createAccessListObj("WIDGET_LOCAL", true));
 
+    console.log("data.access: " + data.access.attribs);
     //add whitelisted features to access list
     if (data.access) {
         //If there is only one access list element, it will be parsed as an object and not an array
@@ -173,15 +174,20 @@ function processWidgetData(data, widgetConfig, session) {
             attribs = accessElement["@"];
 
             if (attribs) {
-                if (attribs.uri === "*") {
+                if (attribs.uri === "*" || attribs.origin === "*") {
                     if (accessElement.feature) {
-                        throw localize.translate("EXCEPTION_FEATURE_DEFINED_WITH_WILDCARD_ACCESS_URI");
+                        throw localize.translate("EXCEPTION_FEATURE_DEFINED_WITH_WILDCARD_ACCESS_URI/ORIGIN");
                     }
 
                     widgetConfig.hasMultiAccess = true;
                 } else {
                     attribs.subdomains = packagerUtils.toBoolean(attribs.subdomains);
-                    widgetConfig.accessList.push(createAccessListObj(attribs.uri, attribs.subdomains));
+                    console.log(typeof attribs.uri);
+                    if (attribs.uri) {
+                        widgetConfig.accessList.push(createAccessListObj(attribs.uri, attribs.subdomains));
+                    } else {
+                        widgetConfig.accessList.push(createAccessListObj(attribs.origin, attribs.subdomains));
+                    }
                 }
             }
         });
