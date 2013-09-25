@@ -21,10 +21,6 @@ goto comment
 set LOCAL_NODE_BINARY=%~dps0dependencies\node\bin
 set LOCAL_BBTOOLS_BINARY=%~dps0dependencies\bb-tools\bin
 
-
-
-if defined %CORDOVA_NODE% { goto bbtools }
-
 if exist "%LOCAL_NODE_BINARY%" (
     set CORDOVA_NODE=%LOCAL_NODE_BINARY%
 ) else (
@@ -38,12 +34,10 @@ if exist "%LOCAL_NODE_BINARY%" (
 
     if defined FOUNDNODE (
         for %%F in ("%FOUNDNODE%") do set CORDOVA_NODE=%%~dpF
+    ) else (
+        set CORDOVA_NODE=\dev\null
     )
 )
-
-:bbtools
-
-if defined %CORDOVA_BBTOOLS% { exit /B }
 
 if exist "%LOCAL_BBTOOLS_BINARY%" (
     set CORDOVA_BBTOOLS=%LOCAL_BBTOOLS_BINARY%
@@ -58,5 +52,13 @@ if exist "%LOCAL_BBTOOLS_BINARY%" (
 
     if defined FOUNDBBTOOLS (
         for %%F in ("%FOUNDBBTOOLS%") do set CORDOVA_BBTOOLS=%%~dpF
+    ) else (
+        set CORDOVA_BBTOOLS=\dev\null
     )
 )
+
+if NOT "%1"=="--skip-check-reqs" (
+    call "%~dps0check_reqs"
+    if "%ERRORLEVEL%" == "1" exit /B 1
+)
+

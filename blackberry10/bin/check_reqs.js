@@ -18,7 +18,7 @@
  */
 
 var MIN_NODE_VER = "0.9.9",
-    signingUtils = require('./templates/project/cordova/lib/signing-utils');
+    signingUtils = require('./lib/signing-utils');
 
 function isNodeNewerThanMin () {
     //Current version is stored as a String in format "X.X.X"

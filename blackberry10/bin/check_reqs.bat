@@ -17,11 +17,13 @@ goto comment
        specific language governing permissions and limitations
        under the License.
 :comment
+
 set INITCALL="%~dps0init"
 if not exist INITCALL (
     set INITCALL="%~dp0init"
 )
-call %INITCALL%
+
+if not defined CORDOVA_NODE ( call %INITCALL% --skip-check-reqs )
 
 set FOUNDJAVA=
 for %%e in (%PATHEXT%) do (
@@ -43,19 +45,19 @@ if not defined FOUNDJAVA (
   echo java cannot be found on the path. Aborting.
   exit /b 1
 )
-if not exist "%CORDOVA_BBTOOLS%\blackberry-nativepackager" (
+if not exist "%CORDOVA_BBTOOLS%\blackberry-nativepackager.bat" (
   echo blackberry-nativepackager cannot be found on the path. Aborting.
   exit /b 1
 )
-if not exist "%CORDOVA_BBTOOLS%\blackberry-deploy" (
+if not exist "%CORDOVA_BBTOOLS%\blackberry-deploy.bat" (
   echo blackberry-deploy cannot be found on the path. Aborting.
   exit /b 1
 )
-if not exist "%CORDOVA_BBTOOLS%\blackberry-signer" (
+if not exist "%CORDOVA_BBTOOLS%\blackberry-signer.bat" (
   echo blackberry-signer cannot be found on the path. Aborting.
   exit /b 1
 )
-if not exist "%CORDOVA_BBTOOLS%\blackberry-debugtokenrequest" (
+if not exist "%CORDOVA_BBTOOLS%\blackberry-debugtokenrequest.bat" (
   echo blackberry-debugtokenrequest cannot be found on the path. Aborting.
   exit /b 1
 )

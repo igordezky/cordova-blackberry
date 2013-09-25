@@ -20,6 +20,7 @@
 CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 LOCAL_NODE_BIN=$CURRENT_DIR/dependencies/node/bin
 LOCAL_BBTOOLS=$CURRENT_DIR/dependencies/bb-tools/bin
+LOCAL_CHECKREQS=$CURRENT_DIR/check_reqs
 
 if [ -z "$CORDOVA_NODE" ]; then
     if [ -x "$LOCAL_NODE_BIN" ]; then
@@ -33,7 +34,7 @@ if [ -z "$CORDOVA_NODE" ]; then
         fi
     fi
 
-    export CORDOVA_NODE=$CORDOVA_NODE
+    export CORDOVA_NODE=${CORDOVA_NODE:=/dev/null}
 fi
 
 if [ -z "$CORDOVA_BBTOOLS" ]; then
@@ -48,6 +49,14 @@ if [ -z "$CORDOVA_BBTOOLS" ]; then
         fi
     fi
 
-    export CORDOVA_BBTOOLS=$CORDOVA_BBTOOLS
+    export CORDOVA_BBTOOLS=${CORDOVA_BBTOOLS:=/dev/null}
+fi
+
+if [ "$1" != "--skip-check-reqs" ]; then
+    #Run check_reqs before doing anything and exit if there's an error
+    $LOCAL_CHECKREQS
+    if [ ${?} -ne 0 ]; then
+        exit 1
+    fi
 fi
 

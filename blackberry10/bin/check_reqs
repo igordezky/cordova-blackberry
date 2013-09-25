@@ -19,7 +19,11 @@
 #!/bin/sh
 
 BIN_DIR=$(dirname "$0")
-source "$BIN_DIR/init"
+
+#Only call init if it hasn't been run already. Prevents recursive loop.
+if [ -z "$CORDOVA_NODE" ] || [ -z "$CORDOVA_BBTOOLS" ]; then
+    source "$BIN_DIR/init" --skip-check-reqs
+fi
 
 NODE="$CORDOVA_NODE/node"
 NPM="$CORDOVA_NODE/npm"
