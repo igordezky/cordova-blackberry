@@ -22,16 +22,19 @@ var path = require("path"),
     signingUtils = require("./signing-utils"),
     barConf = require("./bar-conf"),
     localize = require("./localize"),
-    params;
+    cmdParams;
 
 function getParams(cmdline, toolName) {
+    var properties = utils.getProperties(),
+        params = properties[toolName];
+
     if (cmdline.params) {
-        if (!params) {
+        if (!cmdParams) {
             var paramsPath = path.resolve(cmdline.params);
 
             if (fs.existsSync(paramsPath)) {
                 try {
-                    params = require(paramsPath);
+                    cmdParams = require(paramsPath);
                 } catch (e) {
                     throw localize.translate("EXCEPTION_PARAMS_FILE_ERROR", paramsPath);
                 }
@@ -39,13 +42,17 @@ function getParams(cmdline, toolName) {
                 throw localize.translate("EXCEPTION_PARAMS_FILE_NOT_FOUND", paramsPath);
             }
         }
+    }
 
+    if (cmdParams && cmdParams[toolName]) {
         if (params) {
-            return params[toolName];
+            params = utils.mixin(cmdParams[toolName], params);
+        } else {
+            params = cmdParams;
         }
     }
 
-    return null;
+    return params;
 }
 
 
