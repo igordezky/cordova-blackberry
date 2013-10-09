@@ -18,8 +18,8 @@
        under the License.
 COMMENT
 CORDOVA_DIR=$(dirname "$0")
-source "$CORDOVA_DIR/init"
+. "$CORDOVA_DIR/init"
 
 #package app
-"$CORDOVA_NODE/node" "$CORDOVA_DIR/lib/build" "$@"
+exec "$CORDOVA_NODE/node" "$CORDOVA_DIR/lib/build" "$@"
 
