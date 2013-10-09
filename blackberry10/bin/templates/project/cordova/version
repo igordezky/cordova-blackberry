@@ -18,8 +18,8 @@
        under the License.
 COMMENT
 CORDOVA_DIR=$(dirname "$0")
-source "$CORDOVA_DIR/init"
+. "$CORDOVA_DIR/init"
 
 # Prints cordova version number
-"$CORDOVA_NODE/node" "$CORDOVA_DIR/lib/version" "$@"
+exec "$CORDOVA_NODE/node" "$CORDOVA_DIR/lib/version" "$@"
 
