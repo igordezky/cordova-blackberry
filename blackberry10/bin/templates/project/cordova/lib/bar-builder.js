@@ -42,9 +42,6 @@ function buildTarget(previous, baton) {
 
     //Generate frameworkModules.js (this needs to be done AFTER all files have been copied)
     fileManager.generateFrameworkModulesJS(session);
-    
-    if (process.env.INTERMEDIATE_BUILD)
-		return;
 
     if (process.env.INTERMEDIATE_BUILD) {
 		wrench.copyDirSyncRecursive(session.outputDir + "/src", session.outputDir + "/" + target);
