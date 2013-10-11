@@ -30,9 +30,6 @@ function buildTarget(previous, baton) {
         session = this.session,
         config = this.config;
 
-	logger.info(session.outputDir + "/" + target);
-  
-
     //Copy resources (could be lost if copying assets from other project)
     fileManager.copyNative(this.session, target);
     //Generate user config here to overwrite default
