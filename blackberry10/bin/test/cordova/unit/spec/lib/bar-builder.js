@@ -39,6 +39,7 @@ describe("BAR builder", function () {
         wrench.mkdirSyncRecursive(path.join(session.sourcePaths.LIB, "config"));
 
         spyOn(wrench, "mkdirSyncRecursive");
+        spyOn(wrench, "copyDirSyncRecursive");
         spyOn(fileMgr, "copyWebworks");
         spyOn(fileMgr, "generateFrameworkModulesJS");
         spyOn(nativePkgr, "exec").andCallFake(function (session, target, config, callback) {
