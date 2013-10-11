@@ -30,8 +30,8 @@ function buildTarget(previous, baton) {
         session = this.session,
         config = this.config;
 
-    //Create output folder
-    wrench.mkdirSyncRecursive(session.outputDir + "/" + target);
+	logger.info(session.outputDir + "/" + target);
+  
 
     //Copy resources (could be lost if copying assets from other project)
     fileManager.copyNative(this.session, target);
@@ -48,6 +48,15 @@ function buildTarget(previous, baton) {
     
     if (process.env.INTERMEDIATE_BUILD)
 		return;
+
+    if (process.env.INTERMEDIATE_BUILD) {
+		wrench.copyDirSyncRecursive(session.outputDir + "/src", session.outputDir + "/" + target);
+		baton.pass(0);
+		return;
+	}
+
+    //Create output folder
+    wrench.mkdirSyncRecursive(session.outputDir + "/" + target);
 
     //Call native-packager module for target
     nativePkgr.exec(session, target, config, function (code) {
